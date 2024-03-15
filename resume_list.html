@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Список резюме</title>
+</head>
+<body>
+
+<ul id="resumeList">
+</ul>
+
+<button id="deleteButton" test-id="delete-resumes">Удалить выбранные резюме</button>
+
+<div id="copyModal" style="display: none;">
+    <h2>Выберите поля для копирования</h2>
+    <label><input type="checkbox" id="copyFullName" test-id="copy-modal__checkbox"> ФИО</label><br>
+    <label><input type="checkbox" id="copyBirthdate" test-id="copy-modal__checkbox"> Дата рождения</label><br>
+    <label><input type="checkbox" id="copyCity" test-id="copy-modal__checkbox"> Город</label><br>
+    <label><input type="checkbox" id="copyPhoneNumber" test-id="copy-modal__checkbox"> Номер телефона</label><br>
+    <label><input type="checkbox" id="copyEmail" test-id="copy-modal__checkbox"> Email</label><br>
+    <label><input type="checkbox" id="copyInterests" test-id="copy-modal__checkbox"> Интересы</label><br>
+    <label><input type="checkbox" id="copyLanguages" test-id="copy-modal__checkbox"> Знание языков</label><br>
+    <label><input type="checkbox" id="copyDescription" test-id="copy-modal__checkbox"> Описание</label><br>
+    <label><input type="checkbox" id="copyWorkExperience" test-id="copy-modal__checkbox"> Опыт работы</label><br>
+    <label><input type="checkbox" id="copyEducation" test-id="copy-modal__checkbox"> Образование</label><br>
+    <label><input type="checkbox" id="copyCourses" test-id="copy-modal__checkbox"> Курсы</label><br>
+    <button id="copyResumeButton" test-id="copy-modal__copy">OK</button>
+    <button id="cancelCopyButton" test-id="copy-modal__cancel">Отмена</button>
+</div>
+
+<script>
+
+  let savedResumes = JSON.parse(localStorage.getItem('savedResumes')) || [];
+
+  const resumeListContainer = document.getElementById('resumeList');
+  savedResumes.forEach((resume, index) => {
+    const resumeItem = document.createElement('li');
+    resumeItem.setAttribute('test-id', 'resume-item');
+
+    const resumeHeader = document.createElement('h3');
+    resumeHeader.textContent = resume.fullName;
+    resumeHeader.setAttribute('test-id', 'resume-title');
+    resumeItem.appendChild(resumeHeader);
+
+    const viewButton = document.createElement('button');
+    viewButton.textContent = 'Просмотреть';
+    viewButton.addEventListener('click', () => viewResume(index));
+    resumeItem.appendChild(viewButton);
+
+    const copyButton = document.createElement('button');
+    copyButton.textContent = 'Копировать';
+    copyButton.setAttribute('test-id', 'resume-actions__copy');
+    copyButton.addEventListener('click', () => showCopyModal(index));
+    resumeItem.appendChild(copyButton);
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.setAttribute('test-id', 'resume-checkbox');
+    resumeItem.appendChild(checkbox);
+
+    resumeListContainer.appendChild(resumeItem);
+  });
+
+  const deleteButton = document.getElementById('deleteButton');
+  deleteButton.addEventListener('click', () => {
+    const selectedResumes = document.querySelectorAll('#resumeList input[type="checkbox"]:checked');
+    selectedResumes.forEach(checkbox => {
+      const listItem = checkbox.parentNode;
+      const index = Array.from(listItem.parentNode.children).indexOf(listItem);
+      savedResumes.splice(index, 1);
+      listItem.remove();
+    });
+    localStorage.setItem('savedResumes', JSON.stringify(savedResumes));
+  });
+
+  const cancelButton = document.getElementById('cancelCopyButton');
+  cancelButton.addEventListener('click', () => {
+    document.getElementById('copyModal').style.display = 'none';
+  });
+
+  function viewResume(index) {
+    const resume = savedResumes[index];
+    const queryString = new URLSearchParams(resume).toString();
+    window.location.href = `resume_output.html?${queryString}`;
+  }
+
+  function showCopyModal(index) {
+    const modal = document.getElementById('copyModal');
+    const copyResumeButton = document.getElementById('copyResumeButton');
+
+    const checkboxes = modal.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+      checkbox.checked = false;
+    });
+
+    copyResumeButton.onclick = function() {
+      const fieldsToCopy = {};
+      checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+          const fieldId = checkbox.id.replace('copy', '').toLowerCase();
+          fieldsToCopy[fieldId] = savedResumes[index][fieldId];
+        }
+      });
+
+      fieldsToCopy['fullName'] = savedResumes[index]['fullName'];
+      fieldsToCopy['phoneNumber'] = savedResumes[index]['phoneNumber'];
+      fieldsToCopy['workExperience'] = savedResumes[index]['workExperience'];
+      localStorage.setItem('copiedResume', JSON.stringify(fieldsToCopy));
+      window.location.href = 'index.html';
+    };
+
+    modal.style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

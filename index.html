@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конструктор резюме</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        textarea {
+            height: 100px;
+        }
+        .additional-field {
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
+    <link rel="stylesheet" href="styles/index.css" />
+</head>
+<body>
+<h1 test-id="resume-form-title">Конструктор резюме</h1>
+<form id="resumeForm" test-id="resume-builder">
+    <input type="text" id="fullName" placeholder="ФИО" test-id="personal-info">
+    <input type="text" id="birthdate" placeholder="Дата рождения" test-id="personal-info">
+    <input type="text" id="city" placeholder="Город" test-id="personal-info">
+    <input type="text" id="phoneNumber" placeholder="Номер телефона" test-id="personal-info">
+    <input type="text" id="email" placeholder="Email" test-id="personal-info">
+    <textarea id="interests" placeholder="Интересы" test-id="interest"></textarea>
+    <button type="button" onclick="addInterestField()" test-id="add-interest">Добавить интерес</button>
+    <button type="button" onclick="removeInterestField()" test-id="remove-interest">Удалить интерес</button>
+    <textarea id="languages" placeholder="Знание языков" test-id="language-name"></textarea>
+    <button type="button" onclick="addLanguageField()" test-id="add-language">Добавить язык</button>
+    <button type="button" onclick="removeLanguageField()" test-id="remove-language">Удалить язык</button>
+    <textarea id="description" placeholder="Описание" test-id="personal-description"></textarea>
+    <textarea id="workExperience" placeholder="Опыт работы" test-id="job-title"></textarea>
+    <input type="text" id="workStartDate" placeholder="Дата начала работы" test-id="job-date-start">
+    <input type="text" id="workEndDate" placeholder="Дата окончания работы" test-id="job-date-end">
+    <textarea id="education" placeholder="Образование" test-id="education-title"></textarea>
+    <input type="text" id="educationStartDate" placeholder="Дата начала обучения" test-id="education-date-start">
+    <input type="text" id="educationEndDate" placeholder="Дата окончания обучения" test-id="education-date-end">
+    <textarea id="courses" placeholder="Курсы" test-id="course-title"></textarea>
+    <input type="text" id="courseStartDate" placeholder="Дата начала курса" test-id="course-date-start">
+    <input type="text" id="courseEndDate" placeholder="Дата окончания курса" test-id="course-date-end">
+    <button type="button" onclick="addWorkExperience()" test-id="add-job">Добавить место работы</button>
+    <button type="button" onclick="removeWorkExperience()" test-id="remove-job">Удалить место работы</button>
+    <button type="button" onclick="addEducation()" test-id="add-education">Добавить образование</button>
+    <button type="button" onclick="removeEducation()" test-id="remove-education">Удалить образование</button>
+    <button type="button" onclick="addCourse()" test-id="add-course">Добавить курс</button>
+    <button type="button" onclick="removeCourse()" test-id="remove-course">Удалить курс</button>
+    <button type="button" onclick="generateResume()" test-id="generate-resume">Сгенерировать резюме</button>
+</form>
+
+<script>
+var copiedResume = JSON.parse(localStorage.getItem('copiedResume'));
+
+if (copiedResume) {
+    document.getElementById('fullName').value = copiedResume.fullName || '';
+    document.getElementById('birthdate').value = copiedResume.birthdate || '';
+    document.getElementById('city').value = copiedResume.city || '';
+    document.getElementById('phoneNumber').value = copiedResume.phoneNumber || '';
+    document.getElementById('email').value = copiedResume.email || '';
+    document.getElementById('interests').value = copiedResume.interests || '';
+    document.getElementById('languages').value = copiedResume.languages || '';
+    document.getElementById('description').value = copiedResume.description || '';
+    document.getElementById('workExperience').value = copiedResume.workExperience || '';
+    document.getElementById('workStartDate').value = copiedResume.workStartDate || '';
+    document.getElementById('workEndDate').value = copiedResume.workEndDate || '';
+    document.getElementById('education').value = copiedResume.education || '';
+    document.getElementById('educationStartDate').value = copiedResume.educationStartDate || '';
+    document.getElementById('educationEndDate').value = copiedResume.educationEndDate || '';
+    document.getElementById('courses').value = copiedResume.courses || '';
+    document.getElementById('courseStartDate').value = copiedResume.courseStartDate || '';
+    document.getElementById('courseEndDate').value = copiedResume.courseEndDate || '';
+}
+
+function addInterestField() {
+    var interests = document.getElementById('interests');
+    var newInterestField = document.createElement('textarea');
+    newInterestField.setAttribute('class', 'additional-field');
+    newInterestField.setAttribute('placeholder', 'Еще один интерес');
+    interests.parentNode.insertBefore(newInterestField, interests.nextSibling);
+}
+
+function removeInterestField() {
+    var interests = document.getElementById('interests');
+    var additionalFields = interests.parentNode.getElementsByClassName('additional-field');
+    if (additionalFields.length > 0) {
+        interests.parentNode.removeChild(additionalFields[additionalFields.length - 1]);
+    }
+}
+
+function addLanguageField() {
+    var languages = document.getElementById('languages');
+    var newLanguageField = document.createElement('textarea');
+    newLanguageField.setAttribute('class', 'additional-field');
+    newLanguageField.setAttribute('placeholder', 'Еще один язык');
+    languages.parentNode.insertBefore(newLanguageField, languages.nextSibling);
+}
+
+function removeLanguageField() {
+    var languages = document.getElementById('languages');
+    var additionalFields = languages.parentNode.getElementsByClassName('additional-field');
+    if (additionalFields.length > 0) {
+        languages.parentNode.removeChild(additionalFields[additionalFields.length - 1]);
+    }
+}
+
+function addWorkExperience() {
+    var workExperience = document.getElementById('workExperience');
+    var newWorkExperienceField = document.createElement('textarea');
+    newWorkExperienceField.setAttribute('class', 'additional-field');
+    newWorkExperienceField.setAttribute('placeholder', 'Должность');
+    workExperience.parentNode.insertBefore(newWorkExperienceField, workExperience.nextSibling);
+
+    var newStartDateField = document.createElement('input');
+    newStartDateField.setAttribute('type', 'text');
+    newStartDateField.setAttribute('class', 'additional-field');
+    newStartDateField.setAttribute('placeholder', 'Дата начала работы');
+    workExperience.parentNode.insertBefore(newStartDateField, workExperience.nextSibling);
+
+    var newEndDateField = document.createElement('input');
+    newEndDateField.setAttribute('type', 'text');
+    newEndDateField.setAttribute('class', 'additional-field');
+    newEndDateField.setAttribute('placeholder', 'Дата окончания работы');
+    workExperience.parentNode.insertBefore(newEndDateField, workExperience.nextSibling);
+}
+
+function removeWorkExperience() {
+    var workExperience = document.getElementById('workExperience');
+    var additionalFields = workExperience.parentNode.getElementsByClassName('additional-field');
+    if (additionalFields.length > 0) {
+        workExperience.parentNode.removeChild(additionalFields[additionalFields.length - 1]);
+        workExperience.parentNode.removeChild(additionalFields[additionalFields.length - 2]);
+        workExperience.parentNode.removeChild(additionalFields[additionalFields.length - 3]);
+    }
+}
+
+function addEducation() {
+    var education = document.getElementById('education');
+    var newEducationField = document.createElement('textarea');
+    newEducationField.setAttribute('class', 'additional-field');
+    newEducationField.setAttribute('placeholder', 'Место образования');
+    education.parentNode.insertBefore(newEducationField, education.nextSibling);
+
+    var newStartDateField = document.createElement('input');
+    newStartDateField.setAttribute('type', 'text');
+    newStartDateField.setAttribute('class', 'additional-field');
+    newStartDateField.setAttribute('placeholder', 'Дата начала обучения');
+    education.parentNode.insertBefore(newStartDateField, education.nextSibling);
+
+    var newEndDateField = document.createElement('input');
+    newEndDateField.setAttribute('type', 'text');
+    newEndDateField.setAttribute('class', 'additional-field');
+    newEndDateField.setAttribute('placeholder', 'Дата окончания обучения');
+    education.parentNode.insertBefore(newEndDateField, education.nextSibling);
+}
+
+function removeEducation() {
+    var education = document.getElementById('education');
+    var additionalFields = education.parentNode.getElementsByClassName('additional-field');
+    if (additionalFields.length > 0) {
+        education.parentNode.removeChild(additionalFields[additionalFields.length - 1]);
+        education.parentNode.removeChild(additionalFields[additionalFields.length - 2]);
+        education.parentNode.removeChild(additionalFields[additionalFields.length - 3]);
+    }
+}
+
+function addCourse() {
+    var courses = document.getElementById('courses');
+    var newCourseField = document.createElement('textarea');
+    newCourseField.setAttribute('class', 'additional-field');
+    newCourseField.setAttribute('placeholder', 'Название курса');
+    courses.parentNode.insertBefore(newCourseField, courses.nextSibling);
+
+    var newStartDateField = document.createElement('input');
+    newStartDateField.setAttribute('type', 'text');
+    newStartDateField.setAttribute('class', 'additional-field');
+    newStartDateField.setAttribute('placeholder', 'Дата начала курса');
+    courses.parentNode.insertBefore(newStartDateField, courses.nextSibling);
+
+    var newEndDateField = document.createElement('input');
+    newEndDateField.setAttribute('type', 'text');
+    newEndDateField.setAttribute('class', 'additional-field');
+    newEndDateField.setAttribute('placeholder', 'Дата окончания курса');
+    courses.parentNode.insertBefore(newEndDateField, courses.nextSibling);
+}
+
+function removeCourse() {
+    var courses = document.getElementById('courses');
+    var additionalFields = courses.parentNode.getElementsByClassName('additional-field');
+    if (additionalFields.length > 0) {
+        courses.parentNode.removeChild(additionalFields[additionalFields.length - 1]);
+        courses.parentNode.removeChild(additionalFields[additionalFields.length - 2]);
+        courses.parentNode.removeChild(additionalFields[additionalFields.length - 3]);
+    }
+}
+
+function generateResume() {
+    var fullName = document.getElementById('fullName').value.trim();
+    var birthdate = document.getElementById('birthdate').value.trim();
+    var city = document.getElementById('city').value.trim();
+    var phoneNumber = document.getElementById('phoneNumber').value.trim();
+    var email = document.getElementById('email').value.trim();
+    var interests = document.getElementById('interests').value.trim();
+    var languages = document.getElementById('languages').value.trim();
+    var description = document.getElementById('description').value.trim();
+    var workExperience = document.getElementById('workExperience').value.trim();
+    var workStartDate = document.getElementById('workStartDate').value.trim();
+    var workEndDate = document.getElementById('workEndDate').value.trim(); 
+    var education = document.getElementById('education').value.trim();
+    var educationStartDate = document.getElementById('educationStartDate').value.trim(); 
+    var educationEndDate = document.getElementById('educationEndDate').value.trim(); 
+    var courses = document.getElementById('courses').value.trim();
+    var courseStartDate = document.getElementById('courseStartDate').value.trim(); 
+    var courseEndDate = document.getElementById('courseEndDate').value.trim(); 
+
+    if (fullName === '') {
+        alert('Пожалуйста, укажите ваше ФИО.');
+        return;
+    }
+
+    var resumeData = 'fullName=' + encodeURIComponent(fullName) +
+        '&birthdate=' + encodeURIComponent(birthdate) +
+        '&city=' + encodeURIComponent(city) +
+        '&phoneNumber=' + encodeURIComponent(phoneNumber) +
+        '&email=' + encodeURIComponent(email) +
+        '&interests=' + encodeURIComponent(interests) +
+        '&languages=' + encodeURIComponent(languages) +
+        '&description=' + encodeURIComponent(description) +
+        '&workExperience=' + encodeURIComponent(workExperience) +
+        '&workStartDate=' + encodeURIComponent(workStartDate) +
+        '&workEndDate=' + encodeURIComponent(workEndDate) + 
+        '&education=' + encodeURIComponent(education) +
+        '&educationStartDate=' + encodeURIComponent(educationStartDate) + 
+        '&educationEndDate=' + encodeURIComponent(educationEndDate) +
+        '&courses=' + encodeURIComponent(courses) +
+        '&courseStartDate=' + encodeURIComponent(courseStartDate) + 
+        '&courseEndDate=' + encodeURIComponent(courseEndDate);
+
+    window.location.href = 'resume_output.html?' + resumeData;
+}
+</script>
+
+</body>
+</html>

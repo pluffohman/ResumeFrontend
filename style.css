@@ -1,0 +1,194 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 28px;
+}
+
+.container {
+    width: 900px;
+    height: 853.88px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    display: flex;
+}
+
+.left-panel {
+    width: 256px;
+    height: 853.88px;
+    position: relative;
+    background: #6495ED;
+}
+
+.languages {
+    width: 224px;
+    height: 125px;
+    left: 16px;
+    top: 700px;
+    position: absolute;
+}
+
+.interests {
+    width: 224px;
+    height: 179px;
+    left: 16px;
+    top: 505px;
+    position: absolute;
+}
+
+.personal-data {
+    width: 224px;
+    height: 296px;
+    left: 16px;
+    top: 170px;
+    position: absolute;
+}
+
+.profile-image {
+    width: 200px;
+    height: 200px;
+    left: 16px;
+    top: -190px;
+    border-radius: 180px;
+    position: absolute;
+}
+
+.right-panel {
+    width: 644px;
+    height: 853.88px;
+    position: relative;
+    background: #F8F8F8;
+}
+
+.courses {
+    width: 612px;
+    height: 206px;
+    left: 16px;
+    top: 780px;
+    position: absolute;
+}
+
+.education {
+    width: 600px;
+    height: 243.75px;
+    left: 16px;
+    top: 470px;
+    position: absolute;
+}
+
+.experience {
+    width: 612px;
+    height: 258.75px;
+    left: 16px;
+    top: 170px;
+    position: absolute;
+}
+
+.personal-summary {
+    width: 612px;
+    height: 57.38px;
+    padding-bottom: 66px;
+    left: 16px;
+    top: 160px;
+    position: absolute;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 13.19px;
+    display: inline-flex;
+}
+
+.personal-summary-divider {
+    width: 612px;
+    height: 1px;
+    position: relative;
+    background: #D3D3D3;
+}
+
+.name {
+    left: 16px;
+    top: 100px;
+    position: absolute;
+    color: black;
+    font-family: Arial;
+    font-weight: 800;
+    line-height: 33.60px;
+    word-wrap: break-word;
+    margin-bottom: 5px;
+    font-size: 15px;
+}
+
+.left-panel::after,
+.right-panel::after {
+    content: '';
+    position: absolute;
+    width: 1px; 
+    height: 100%; 
+    background-color: #D3D3D3; 
+    top: 0;
+}
+
+.left-panel::after {
+    right: 0;
+}
+
+.right-panel::after {
+    left: 0;
+}
+
+.left-panel, .right-panel {
+    padding: 20px;
+}
+
+.divider {
+    margin: 20px 0;
+    border-top: 1px solid black;
+}
+
+h2 {
+    margin: 0;
+    padding-bottom: 10px;
+}
+
+.personal-summary div {
+    margin-bottom: 5px;
+}
+
+.personal-summary {
+    margin-top: 15px;
+}
+
+.personal-data {
+    margin-bottom: 20px;
+}
+
+.data-label {
+    margin-bottom: 5px;
+}
+
+.additional-info {
+    margin-left: 10px;
+    padding-left: 10px;
+    border-left: 1px solid #D3D3D3;
+    display: flex;
+    flex-direction: column;
+}
+
+.additional-info h2 {
+    margin-top: 0;
+}
+.save-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
